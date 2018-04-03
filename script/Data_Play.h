@@ -12,6 +12,7 @@ private:
 	bool _isEnd;
 public:
 	// Constructor
+	Data_Play();
 	Data_Play(Grid grid, Player player, int column, bool isEnd);
 	// Call By Reference
 	Grid& Get_Grid();

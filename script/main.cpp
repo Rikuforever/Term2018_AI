@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include "Grid.h"
 #include "Data_Play.h"
 
 int main(int argc, char *argv[]) {

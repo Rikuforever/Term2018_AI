@@ -132,13 +132,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="script\Data_MinMax.h" />
     <ClInclude Include="script\Data_Play.h" />
     <ClInclude Include="script\Grid.h" />
+    <ClInclude Include="script\Node.h" />
+    <ClInclude Include="script\Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="script\Data_Play.cpp" />
     <ClCompile Include="script\Grid.cpp" />
     <ClCompile Include="script\main.cpp" />
+    <ClCompile Include="script\Node.cpp" />
+    <ClCompile Include="script\Tree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
