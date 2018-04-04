@@ -14,8 +14,9 @@ public:
 	// Constructor
 	Data_Play();
 	Data_Play(Grid grid, Player player, int column, bool isEnd);
-	// Call By Reference
+	// Data Function
 	Grid& Get_Grid();
-	// Call By Value
-	Grid Copy_Grid();
+	Player& Get_Player();
+	int& Get_Column();
+	bool& Get_IsEnd();
 };
