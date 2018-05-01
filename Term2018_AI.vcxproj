@@ -18,6 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="script\Board.cpp" />
+    <ClCompile Include="script\GameHandler.cpp" />
+    <ClCompile Include="script\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="script\AlphaBetaPlayer.h" />
+    <ClInclude Include="script\Board.h" />
+    <ClInclude Include="script\GameHandler.h" />
+    <ClInclude Include="script\HumanPlayer.h" />
+    <ClInclude Include="script\Player.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{69C0868F-0292-42C6-A996-031C774DBDF7}</ProjectGuid>
@@ -83,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>.\common\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -108,6 +121,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -131,20 +145,6 @@
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="script\Data_MinMax.h" />
-    <ClInclude Include="script\Data_Play.h" />
-    <ClInclude Include="script\Grid.h" />
-    <ClInclude Include="script\Node.h" />
-    <ClInclude Include="script\Tree.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="script\Data_Play.cpp" />
-    <ClCompile Include="script\Grid.cpp" />
-    <ClCompile Include="script\main.cpp" />
-    <ClCompile Include="script\Node.cpp" />
-    <ClCompile Include="script\Tree.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
