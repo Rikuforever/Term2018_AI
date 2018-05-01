@@ -26,11 +26,13 @@ class HumanPlayer: public Player {
         int getMove(Board& board) {
             int move;
             for (;;) {
+				printf("Player    | Input column : ");
                 scanf("%d",&move);
-                if (board.validMove(move)) break;
-                printf("HumanPlayer: Invalid move.\n");
+                if (board.validMove(move - 1)) break;
+                printf("Player    | Invalid move.\n");
+
             }
-            return move;
+            return move - 1;
         }
 };
 

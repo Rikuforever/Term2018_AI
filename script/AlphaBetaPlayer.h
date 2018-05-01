@@ -65,6 +65,35 @@ class AlphaBetaPlayer: public Player {
          * @return The decided move.
          **/
         int getMove(Board& curboard) {
+			bool doRule;
+
+			// 1. Select method
+			char inputChar = EOF;
+			do {
+				printf("Computer  |  (1) Heuristic\n");
+				printf("Computer  |  (2) Rule\n");
+				printf("Computer  |  Choose method : ");
+
+				switch (inputChar = getchar()) {
+				case '1':
+				case NULL:
+					printf("Computer  | Computing by heuristic...\n");
+					doRule = false;
+					break;
+				case '2':
+					printf("Computer  | Computing by rule...\n");
+					doRule = true;
+					break;
+				default:
+					printf("Computer  | Invalid input.\n");
+					inputChar = EOF;
+					break;
+				}
+
+				char bufferChar = NULL;	// Flush buffer
+				while ((bufferChar = getchar()) == '\n' && bufferChar == EOF) {}
+			} while (inputChar == EOF);
+
             std::vector<int> moves = curboard.validMoves();
             std::vector<int> candMoves;
             int bestScore = playerid?-(1<<25):-(1<<25);
