@@ -11,6 +11,7 @@
 
 #include "Player.h"
 #include "Board.h"
+#include "Rule.h"
 
 #include <vector>
 #include <cstdio>
@@ -70,9 +71,9 @@ class AlphaBetaPlayer: public Player {
 			// 1. Select method
 			char inputChar = EOF;
 			do {
-				printf("Computer  |  (1) Heuristic\n");
-				printf("Computer  |  (2) Rule\n");
-				printf("Computer  |  Choose method : ");
+				printf("Computer  | (1) Heuristic\n");
+				printf("Computer  | (2) Rule\n");
+				printf("Computer  | Choose method : ");
 
 				switch (inputChar = getchar()) {
 				case '1':
@@ -90,27 +91,36 @@ class AlphaBetaPlayer: public Player {
 					break;
 				}
 
-				char bufferChar = NULL;	// Flush buffer
-				while ((bufferChar = getchar()) == '\n' && bufferChar == EOF) {}
+				while (getchar() != '\n') {}	// Clear buffer
 			} while (inputChar == EOF);
 
-            std::vector<int> moves = curboard.validMoves();
-            std::vector<int> candMoves;
-            int bestScore = playerid?-(1<<25):-(1<<25);
-            for (int i = (int)moves.size()-1; i+1; --i) {
-                Board newboard = Board(curboard, moves[i], playerid);
-                int curScore = alphaBeta(newboard, MAXDEPTH+2*(7-moves.size()), -(1<<15), 1<<15, playerid^1);
-                if (curScore > bestScore) {
-                    candMoves.clear();
-                    bestScore = curScore;
-                    candMoves.push_back(moves[i]);
-                } else if (curScore == bestScore) {
-                    candMoves.push_back(moves[i]);
-                }
-                printf("move %d has score %d\n",moves[i],curScore);
-            }
-            printf("AlphaBetaPlayer at depth %d (player %d) eval: %d\n",MAXDEPTH+2*(7-(int)moves.size()),playerid,bestScore);
-            return candMoves[(rand()%((int)candMoves.size()))];
+			// 2. Compute 
+			std::vector<int> moves = curboard.validMoves();
+			std::vector<int> candMoves;
+
+			if (doRule) {		// Rule
+				std::vector<std::vector<int>> vecboard = curboard.getvector(playerid);
+				candMoves.push_back(Rule(vecboard));
+			}
+			else {				// Heuristic
+				int bestScore = playerid ? -(1 << 25) : -(1 << 25);
+				for (int i = (int)moves.size() - 1; i + 1; --i) {
+					Board newboard = Board(curboard, moves[i], playerid);
+					int curScore = alphaBeta(newboard, MAXDEPTH + 2 * (7 - moves.size()), -(1 << 15), 1 << 15, playerid ^ 1);
+					if (curScore > bestScore) {
+						candMoves.clear();
+						bestScore = curScore;
+						candMoves.push_back(moves[i]);
+					}
+					else if (curScore == bestScore) {
+						candMoves.push_back(moves[i]);
+					}
+					printf("Computer  | Heuristic | MOVE %d has SCORE %d\n", moves[i] + 1, curScore);
+				}
+				printf("Computer  | Heuristic | Result : DEPTH %d (player %d) EVAL %d\n", MAXDEPTH + 2 * (7 - (int)moves.size()), playerid, bestScore);
+			}
+
+			return candMoves[(rand()%((int)candMoves.size()))];
         }
 };
 

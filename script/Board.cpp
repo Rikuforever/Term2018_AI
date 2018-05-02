@@ -16,6 +16,10 @@
 #define DIAG_SHIFT1 7
 #define DIAG_SHIFT2 9
 
+#define VAL_NULL 0
+#define VAL_ME 1
+#define VAL_OPPONENT 2
+
 #pragma region Debug
 
 void printBits(size_t const size, void const * const ptr) {
@@ -157,5 +161,26 @@ int Board::score() {
         }
     }
     return ret;
+}
+
+std::vector<std::vector<int>> Board::getvector(int playerID) {
+	std::vector<std::vector<int>> result;
+	std::bitset<64> bit0(bricks[0]);
+	std::bitset<64> bit1(bricks[1]);
+
+	for (int x = 0; x < COLS; x++) {
+		std::vector<int> col;
+		for (int y = 0; y < ROWS; y++) {
+			int idx = x + (COLS + 1) * (ROWS - 1 - y);
+			if (bit0[idx] == true)
+				col.push_back((playerID == 0) ? VAL_ME : VAL_OPPONENT);
+			else if (bit1[idx] == true)
+				col.push_back((playerID == 1) ? VAL_ME : VAL_OPPONENT);
+			else
+				col.push_back(VAL_NULL);
+		}
+		result.push_back(col);
+	}
+	return result;
 }
 

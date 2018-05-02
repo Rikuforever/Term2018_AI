@@ -35,13 +35,12 @@ void GameHandler::play() {
 				p[1]->playerid = 1;
 				break;
 			default:
-				printf("WRONG INPUT\n\n");
+				printf("Game      | WRONG INPUT\n\n");
 				inputChar = NULL;
 				break;
 		}
 
-		char bufferChar = NULL;	// Flush buffer
-		while ((bufferChar = getchar()) == '\n' && bufferChar == EOF) {}
+		while (getchar() != '\n') {}	// Clear buffer
 	} while (inputChar == NULL);
 
 	// 2. Initialize
@@ -53,10 +52,14 @@ void GameHandler::play() {
     while (board.result() == -1) {
         move = p[turn%2]->getMove(board);	// decide move
 		board.makeMove(move, turn%2);		// execute move
-        board.plot();						// output result
-        ++turn;
+
+		// output result
+		printf("Game      | PLAYER %d MOVE %d \n\n", turn % 2, move + 1);
+		board.plot();
+
+		++turn;
     }
     int res;
-    if ((res=board.result()) == 2) printf("Draw!\n");
-    else printf("Player %d won!\n",res);
+    if ((res=board.result()) == 2) printf("Game      | Draw!\n");
+    else printf("Game      | Player %d won!\n",res);
 }

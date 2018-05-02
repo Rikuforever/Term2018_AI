@@ -81,6 +81,10 @@ class Board {
          * @return board evaluation
          */
         int score();
+
+		// CUSTOM FUNCTIONS
+		std::vector<std::vector<int>> getvector(int playerID);
+
 };
 
 #endif // BOARD_HH

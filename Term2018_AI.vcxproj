@@ -22,6 +22,7 @@
     <ClCompile Include="script\Board.cpp" />
     <ClCompile Include="script\GameHandler.cpp" />
     <ClCompile Include="script\main.cpp" />
+    <ClCompile Include="script\Rule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\AlphaBetaPlayer.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="script\GameHandler.h" />
     <ClInclude Include="script\HumanPlayer.h" />
     <ClInclude Include="script\Player.h" />
+    <ClInclude Include="script\Rule.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
