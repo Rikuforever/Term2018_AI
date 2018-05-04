@@ -44,7 +44,7 @@ void GameHandler::play() {
 	} while (inputChar == NULL);
 
 	// 2. Initialize
-    int turn = 0,move;
+    int turn = 0,move = 0;
 
 	// 3. Play
 	printf("Game      | Game Start!\n");

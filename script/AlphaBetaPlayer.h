@@ -16,6 +16,7 @@
 #include <vector>
 #include <cstdio>
 #include <algorithm>
+#include <ctime>
 
 #define MAXDEPTH 8
 
@@ -94,7 +95,10 @@ class AlphaBetaPlayer: public Player {
 				while (getchar() != '\n') {}	// Clear buffer
 			} while (inputChar == EOF);
 
-			// 2. Compute 
+			// 2. Start Timer
+			double starttime = clock();
+
+			// 3. Compute 
 			std::vector<int> moves = curboard.validMoves();
 			std::vector<int> candMoves;
 			//    Exclude typical move on first turn
@@ -130,6 +134,9 @@ class AlphaBetaPlayer: public Player {
 				}
 				printf("Computer  | Heuristic | Result : DEPTH %d (player %d) EVAL %d\n", MAXDEPTH + 2 * (7 - (int)moves.size()), playerid, bestScore);
 			}
+
+			// 4. End Timer
+			printf("Computer  | Elapsed Time : %.2f sec\n", (clock() - starttime) / (double)CLOCKS_PER_SEC);
 
 			return candMoves[(rand()%((int)candMoves.size()))];
         }
