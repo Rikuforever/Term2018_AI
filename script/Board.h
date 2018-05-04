@@ -84,7 +84,7 @@ class Board {
 
 		// CUSTOM FUNCTIONS
 		std::vector<std::vector<int>> getvector(int playerID);
-
+		bool isempty();
 };
 
 #endif // BOARD_HH

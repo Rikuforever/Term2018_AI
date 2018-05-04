@@ -97,6 +97,17 @@ class AlphaBetaPlayer: public Player {
 			// 2. Compute 
 			std::vector<int> moves = curboard.validMoves();
 			std::vector<int> candMoves;
+			//    Exclude typical valid if first move
+			if (curboard.isempty()) {
+				for (int i = 0; i < moves.size(); i++) {
+					if (moves[i] == 4) {
+						moves.erase(moves.begin() + i - 1);
+						printf("Computer  | Excluded 'MOVE 4' when first turn.\n");
+						break;
+					}
+				}
+			}
+
 
 			if (doRule) {		// Rule
 				std::vector<std::vector<int>> vecboard = curboard.getvector(playerid);

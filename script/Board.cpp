@@ -184,3 +184,7 @@ std::vector<std::vector<int>> Board::getvector(int playerID) {
 	return result;
 }
 
+bool Board::isempty() {
+	return !(bricks[0] + bricks[1]);
+}
+
