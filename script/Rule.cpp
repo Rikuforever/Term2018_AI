@@ -365,90 +365,91 @@ bool Find_Shape_4(List* list, int example[][6]);
 bool Find_Shape_5(List* list, int example[][6]);
 void Define_Block(Block* a, int example[][6]);
 
-int Rule(std::vector<std::vector<int>> board){
-    List mlist,m2list;
-    List* list=&mlist;
-    List* clist=&m2list;
-    initlist(list);
-    initlist(clist);
+int Rule(std::vector<std::vector<int>> board){              // return 형이 int 형이며 게임보드 data를 vector<std::vector<int>> 형으로 받는 함수 Rule
+    List mlist,m2list;                                      // mlist와 m2List 선언
+    List* list=&mlist;                                      // list는 mlist의 주소값을 담고있다.
+    List* clist=&m2list;                                    // clist는 m2list의 주소값을 담고있다.
+    initlist(list);                                         // list 초기화
+    initlist(clist);                                        // clist 초기화
     
-    int example[7][6];
+    int example[7][6];                                      // 게임판의 data를 담을 int형 2차원배열 선언
     
-    for (int x = 0; x < 7; x++) {
+    for (int x = 0; x < 7; x++) {                           // vector<std::vector<int>> 의 데이터를 int형 2차원배열에 담는다
         for (int y = 0; y < 6; y++) {
             example[x][y] = board[x][y];
         }
     }
     
-    if(First_shot(example)){
-        return 2;
+    if(First_shot(example)){                                // 게임의 첫수를 두는지 판별하는 함수 return값이 true라면 첫수를 두는 것이다.
+        return 2;                                           // 첫수를 둔다면 Grid 기준 (2,0) 에 둔다.
     }
     
-    if(Find_Shape_1(list,example)){
-        for(int i=1; i<=List_Count(list);i++){
+    if(Find_Shape_1(list,example)){                         // Shape 가 1인 블록을 찾아서 List에 추가하는 과정을 담고있는 함수
+        for(int i=1; i<=List_Count(list);i++){              // List내의 존재하는 모든 Block 에 접근하기 위한 반복문
             Block* temp= Select_ith_Block(i, list);
-            Define_Block(temp, example);
+            Define_Block(temp, example);                    // Block 의 Priority와 key1,key2값을 지정해주기위한 함수
         }
-        Block* result =Compair_Block(list);
-        if(result!=NULL){
-            ShowBlock(result);
-            int r= result->key.x;
-            return r;
+        AddCautionList(list,clist);                         // 두면 안되는 착수점 정보를 담고있는 모든 Block들을 clist에 추가
+        Block* result =Compare_Block(list);                 // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
+        if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
+            ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            int r= result->key.x;                           // 착수점의 위치를 추려낸다
+            return r;                                       // 착수점을 반환한다
         }
     }
-    if(Find_Shape_2(list,example)){
-        for(int i=0; i<List_Count(list);i++){
+    if(Find_Shape_2(list,example)){                         // Shape 가 2인 블록을 찾아서 List에 추가하는 과정을 담고있는 함수
+        for(int i=0; i<List_Count(list);i++){               // List내의 존재하는 모든 Block 에 접근하기 위한 반복문
             Block* temp = Select_ith_Block(i+1, list);
-            Define_Block(temp, example);
+            Define_Block(temp, example);                    // Block 의 Priority와 key1,key2값을 지정해주기위한 함수
         }
-        AddCautionList(list,clist);
-        Block* result =Compair_Block(list,clist);
-        if(result!=NULL){
-            ShowBlock(result);
-            int r= result->key.x;
-            return r;
+        AddCautionList(list,clist);                         // 두면 안되는 착수점 정보를 담고있는 모든 Block들을 clist에 추가
+        Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
+        if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
+            ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            int r= result->key.x;                           // 착수점의 위치를 추려낸다
+            return r;                                       // 착수점을 반환한다
         }
     }
-    if(Find_Shape_3(list,example)){
-        for(int i=0; i<List_Count(list);i++){
+    if(Find_Shape_3(list,example)){                         // Shape 가 3인 블록을 찾아서 List에 추가하는 과정을 담고있는 함수
+        for(int i=0; i<List_Count(list);i++){               // List내의 존재하는 모든 Block 에 접근하기 위한 반복문
             Block* temp = Select_ith_Block(i+1, list);
-            Define_Block(temp, example);
+            Define_Block(temp, example);                    // Block 의 Priority와 key1,key2값을 지정해주기위한 함수
         }
-        AddCautionList(list, clist);
-        Block* result =Compair_Block(list,clist);
-        if(result!=NULL){
-            ShowBlock(result);
-            int r= result->key.x;
-            return r;
+        AddCautionList(list, clist);                        // 두면 안되는 착수점 정보를 담고있는 모든 Block들을 clist에 추가
+        Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
+        if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
+            ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            int r= result->key.x;                           // 착수점의 위치를 추려낸다
+            return r;                                       // 착수점을 반환한다
         }
     }
-    if(Find_Shape_4(list,example)){
-        for(int i=0; i<List_Count(list);i++){
+    if(Find_Shape_4(list,example)){                         // Shape 가 4인 블록을 찾아서 List에 추가하는 과정을 담고있는 함수
+        for(int i=0; i<List_Count(list);i++){               // List내의 존재하는 모든 Block 에 접근하기 위한 반복문
             Block* temp = Select_ith_Block(i+1, list);
-            Define_Block(temp, example);
+            Define_Block(temp, example);                    // Block 의 Priority와 key1,key2값을 지정해주기위한 함수
         }
-        AddCautionList(list, clist);
-        Block* result =Compair_Block(list,clist);
-        if(result!=NULL){
-            ShowBlock(result);
-            int r = result->key.x;
-            return r;
+        AddCautionList(list, clist);                        // 두면 안되는 착수점 정보를 담고있는 모든 Block들을 clist에 추가
+        Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
+        if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
+            ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            int r = result->key.x;                          // 착수점의 위치를 추려낸다
+            return r;                                       // 착수점을 반환한다
         }
     }
-    if(Find_Shape_5(list,example)){
-        for(int i=0; i<List_Count(list);i++){
+    if(Find_Shape_5(list,example)){                         // Shape 가 5인 블록을 찾아서 List에 추가하는 과정을 담고있는 함수
+        for(int i=0; i<List_Count(list);i++){               // List내의 존재하는 모든 Block 에 접근하기 위한 반복문
             Block* temp = Select_ith_Block(i+1, list);
-            Define_Block(temp, example);
+            Define_Block(temp, example);                    // Block 의 Priority와 key1,key2값을 지정해주기위한 함수
         }
-        AddCautionList(list, clist);
-        Block* result =Compair_Block(list,clist);
-        if(result!=NULL){
-            ShowBlock(result);
-            int r = result->key.x;
-            return r;
+        AddCautionList(list, clist);                        // 두면 안되는 착수점 정보를 담고있는 모든 Block들을 clist에 추가
+        Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
+        if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
+            ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            int r = result->key.x;                          // 착수점의 위치를 추려낸다
+            return r;                                       // 착수점을 반환한다
         }
     }
-    return RandomPick(clist);
+    return RandomPick(clist);                               // 위에서 아무런 착수점도 찾지 못했다면 절대 두면 않되는 자리를 제외한 자리에 둔다
 }
 
 
