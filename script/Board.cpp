@@ -22,6 +22,7 @@
 
 #pragma region Custom
 
+// 값을 이진수로 출력
 void printBits(size_t const size, void const * const ptr) {
 	unsigned char *b = (unsigned char*)ptr;
 	unsigned char byte;
@@ -36,6 +37,7 @@ void printBits(size_t const size, void const * const ptr) {
 	puts("");
 }
 
+// 비트 연산후에 무시할 데이터를 일괄 처리
 void excludeDummy(std::bitset<64>* bs, int offset) {
 	static int dummy[] = { 7,15,23,31,39,47 };
 
@@ -51,8 +53,8 @@ void excludeDummy(std::bitset<64>* bs, int offset) {
 #pragma endregion 
 
 Board::Board() {
-    bricks[0] = 0;
-    bricks[1] = 0;
+    bricks[0] = 0;	// player0 판
+    bricks[1] = 0;	// player1 판
 }
 
 Board::Board(Board& b, int c, int p) {
@@ -61,6 +63,7 @@ Board::Board(Board& b, int c, int p) {
     makeMove(c,p);
 }
 
+// 유효한 수 목록을 반환
 std::vector<int> Board::validMoves() {
     std::vector<int> result;
 	unsigned long long all = bricks[0] | bricks[1];
@@ -68,11 +71,13 @@ std::vector<int> Board::validMoves() {
     return result;
 }
 
+// 유효한 수인지 확인
 bool Board::validMove(int c) {
     if (c < 0 || c >= COLS) return false;
     return !((bricks[0] | bricks[1]) & (1<<c));
 }
 
+// 보드에 수 두기
 void Board::makeMove(int c, int p) {
 	unsigned long long bit = 1LL<<(c+(COLS+1)*(ROWS-1));
     unsigned long long all = bricks[0] | bricks[1];
@@ -82,6 +87,7 @@ void Board::makeMove(int c, int p) {
     bricks[p] |= bit;
 }
 
+// 보드 시각화
 void Board::plot() {
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -98,6 +104,7 @@ void Board::plot() {
     }
 }
 
+// 보드 결과 출력 (승리/패배/무승부)
 int Board::result() {
     unsigned long long temp;
 
@@ -115,6 +122,7 @@ int Board::result() {
     return -1;
 }
 
+// Heuristic Function
 int Board::score() {
     int result_check = result();
     if (result_check != -1) {
@@ -132,7 +140,7 @@ int Board::score() {
 	for (int p = 0; p < 2; ++p) {
         for (int ss = 0; ss < 3; ++ss) {
             
-            // O--O
+            // O--O 패턴 (3점)
             tmp1 = bricks[p]&(bricks[p] << 3*shifts[ss]);
             tmp2 = ~bricks[!p];
             tmp2 &= (tmp2<<shifts[ss]);
@@ -158,17 +166,17 @@ int Board::score() {
 			}
 			ret += 3 * (p ? -1 : 1)*cnt1.count();
 
-            // OO
+            // OO 패턴 (2점)
             tmp3 = bricks[p] & (bricks[p]<<(1*shifts[ss]));
 			std::bitset<64> cnt2(tmp3);
             ret += 2*(p?-1:1)*cnt2.count();
 
-            // OOO
+            // OOO 패턴 (7점)
             tmp3 = bricks[p] & (bricks[p]<<(1*shifts[ss])) & (bricks[p]<<(2*shifts[ss]));
 			std::bitset<64> cnt3(tmp3);
             ret += 7*(p?-1:1)*cnt3.count();
 
-            // O-OO / OO-O
+            // O-OO / OO-O 패턴 (10점)
             tmp1 = bricks[p]&(bricks[p] << 3*shifts[ss]);
             tmp2 = ~bricks[!p];
             tmp2 &= (tmp2<<shifts[ss]);
@@ -199,6 +207,7 @@ int Board::score() {
     return ret;
 }
 
+// 비트값을 이차원 배열로 변환 (Rule 계산을 위해)
 std::vector<std::vector<int>> Board::getvector(int playerID) {
 	std::vector<std::vector<int>> result;
 	std::bitset<64> bit0(bricks[0]);
@@ -220,6 +229,7 @@ std::vector<std::vector<int>> Board::getvector(int playerID) {
 	return result;
 }
 
+// 보드가 비어있는지, 초기 상태인지 확인
 bool Board::isempty() {
 	return !(bricks[0] + bricks[1]);
 }
