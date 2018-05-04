@@ -182,6 +182,12 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
                         return newlist;
                     }
                 }
+                else{
+                    list->current=list->current->next;
+                    if(list->current==NULL){
+                        return newlist;
+                    }
+                }
             }
             else{
                 list->current=list->current->next;
