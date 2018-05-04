@@ -22,8 +22,8 @@ public:
         this->x=x;
         this->y=y;
     }
-    int x=999;
-    int y=999;
+    int x=9;
+    int y=9;
 };
 
 class Block{
@@ -164,21 +164,23 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
             }
         }
         else{
-            if((list->current->priority==p && list->current->friendly==f) && n!=(n&(int)pow(2,list->current->key.x))) {
-                Block* newb = (Block*)malloc(sizeof(Block));
-                newb->shape=list->current->shape;
-                newb->direction=list->current->direction;
-                newb->key=list->current->key;
-                newb->friendly=list->current->friendly;
-                newb->priority=list->current->priority;
-                newb->position[0]=list->current->position[0];
-                newb->position[1]=list->current->position[1];
-                newb->position[2]=list->current->position[2];
-                newb->key2=list->current->key2;
-                Add_Block(newb, newlist);
-                list->current=list->current->next;
-                if(list->current==NULL){
-                    return newlist;
+            if(list->current->priority==p && list->current->friendly==f){
+                if(n!=(n|(int)pow(2,list->current->key.x))&&n!=(n|(int)pow(2,list->current->key2.x))){
+                    Block* newb = (Block*)malloc(sizeof(Block));
+                    newb->shape=list->current->shape;
+                    newb->direction=list->current->direction;
+                    newb->key=list->current->key;
+                    newb->friendly=list->current->friendly;
+                    newb->priority=list->current->priority;
+                    newb->position[0]=list->current->position[0];
+                    newb->position[1]=list->current->position[1];
+                    newb->position[2]=list->current->position[2];
+                    newb->key2=list->current->key2;
+                    Add_Block(newb, newlist);
+                    list->current=list->current->next;
+                    if(list->current==NULL){
+                        return newlist;
+                    }
                 }
             }
             else{
@@ -192,6 +194,9 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
 }
 
 Block* Compair_Block(List* list){
+    if(list->head==NULL){
+        return NULL;
+    }
     List _newlist;
     List* newlist=&_newlist;
     initlist(newlist);
@@ -216,6 +221,9 @@ Block* Compair_Block(List* list){
 }
 
 Block* Compair_Block(List* list, List* clist){  //overload
+    if(list->head==NULL){
+        return NULL;
+    }
     List _newlist;
     List* newlist=&_newlist;
     initlist(newlist);
@@ -285,6 +293,9 @@ void ShowBlock(Block* b){
 }
 
 void AddCautionList(List* list, List* clist){
+    if(list->head==NULL){
+        return;
+    }
     List * newlist;
     newlist=Select_Blocks(2,false, list);
     for(int i=0; i<List_Count(newlist)-1; i++){
@@ -299,7 +310,7 @@ void AddCautionList(List* list, List* clist){
         newb->position[1]=temp->position[1];
         newb->position[2]=temp->position[2];
         newb->key2=temp->key2;
-        Add_Block(newb, clist);
+        ShowBlock(newb);
     }
 }
 
@@ -321,16 +332,17 @@ int BitCalculate(List* clist){
 }
 
 int RandomPick(List* clist){
-    srand(time(NULL));
+    srand((unsigned int)time(NULL));
     int n = BitCalculate(clist);
-    n=127-n;
     int s=rand()%7;
     s=(int)pow(2, s);
-    while (n==(n&s)) {
-        int s=rand()%7;
+    while (1) {
+        if(n!=(n|s)){
+            return log2(s);
+        }
+        s=rand()%7;
         s=(int)pow(2, s);
     }
-    return (int)log2(s);
 }
 
 bool First_shot(int example [][6]){
@@ -353,17 +365,23 @@ bool Find_Shape_4(List* list, int example[][6]);
 bool Find_Shape_5(List* list, int example[][6]);
 void Define_Block(Block* a, int example[][6]);
 
-int Rule(std::vector<std::vector<int>> board) {
+int Rule(std::vector<std::vector<int>> board){
     List mlist,m2list;
     List* list=&mlist;
     List* clist=&m2list;
     initlist(list);
     initlist(clist);
     
-    int example[7][6]=board;
+    int example[7][6];
+    
+    for (int x = 0; x < 7; x++) {
+        for (int y = 0; y < 6; y++) {
+            example[x][y] = board[x][y];
+        }
+    }
     
     if(First_shot(example)){
-        return 3;
+        return 2;
     }
     
     if(Find_Shape_1(list,example)){
@@ -375,7 +393,7 @@ int Rule(std::vector<std::vector<int>> board) {
         if(result!=NULL){
             ShowBlock(result);
             int r= result->key.x;
-            return r+1;
+            return r;
         }
     }
     if(Find_Shape_2(list,example)){
@@ -383,12 +401,12 @@ int Rule(std::vector<std::vector<int>> board) {
             Block* temp = Select_ith_Block(i+1, list);
             Define_Block(temp, example);
         }
-        AddCautionList(list, clist);
+        AddCautionList(list,clist);
         Block* result =Compair_Block(list,clist);
         if(result!=NULL){
             ShowBlock(result);
             int r= result->key.x;
-            return r+1;
+            return r;
         }
     }
     if(Find_Shape_3(list,example)){
@@ -401,7 +419,7 @@ int Rule(std::vector<std::vector<int>> board) {
         if(result!=NULL){
             ShowBlock(result);
             int r= result->key.x;
-            return r+1;
+            return r;
         }
     }
     if(Find_Shape_4(list,example)){
@@ -414,7 +432,7 @@ int Rule(std::vector<std::vector<int>> board) {
         if(result!=NULL){
             ShowBlock(result);
             int r = result->key.x;
-            return r+1;
+            return r;
         }
     }
     if(Find_Shape_5(list,example)){
@@ -427,10 +445,10 @@ int Rule(std::vector<std::vector<int>> board) {
         if(result!=NULL){
             ShowBlock(result);
             int r = result->key.x;
-            return r+1;
+            return r;
         }
     }
-    return RandomPick(clist)+1;
+    return RandomPick(clist);
 }
 
 
@@ -967,7 +985,7 @@ void Define_Block(Block* a, int example[][6]) {
             int x2 = a->position[2].x;
             int y2 = a->position[2].y;
             //세로로 000일때에는 무조건 위를 막아야 하고 그곳은 무조건 둘수 있다.
-            if (y2 <= 4) {
+            if (y2 <= 4 && example[x2][y2 + 1] == 0) {
                 a->priority = 1;
                 Grid x(x2, y2 + 1);
                 a->key = x;
@@ -1303,7 +1321,7 @@ void Define_Block(Block* a, int example[][6]) {
             int x2 = a->position[1].x;
             int y2 = a->position[1].y;
             //세로로 두칸인경우 그 위에 둔다
-            if (y2 <= 3) {
+            if (y2 <= 3 && example[x2][y2 + 1] == 0) {
                 a->priority = 1;
                 Grid x(x2, y2 + 1);
                 a->key = x;
