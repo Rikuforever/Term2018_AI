@@ -20,7 +20,7 @@
 #define VAL_ME 1
 #define VAL_OPPONENT 2
 
-#pragma region Debug
+#pragma region Custom
 
 void printBits(size_t const size, void const * const ptr) {
 	unsigned char *b = (unsigned char*)ptr;
@@ -34,6 +34,18 @@ void printBits(size_t const size, void const * const ptr) {
 		}
 	}
 	puts("");
+}
+
+void excludeDummy(std::bitset<64>* bs, int offset) {
+	static int dummy[] = { 7,15,23,31,39,47 };
+
+	if (bs->count() != 0) {
+		for (int i = 0; i < 6; i++) {
+			if ((*bs)[dummy[i] + offset] == true) {
+				bs->set(dummy[i] + offset, false);
+			}	
+		}
+	}
 }
 
 #pragma endregion 
@@ -128,13 +140,21 @@ int Board::score() {
             tmp2 &= (tmp2<<shifts[ss]);
             tmp2 &= tmp1;
 			std::bitset<64> cnt1(tmp2);
-			if (cnt1.count() != 0 && shifts[ss] == ROW_SHIFT) {
-				int ignoreIdx[]{ 9,10,17,18,25,26,33,34,41,42 };
-				for (int i = 0; i < 10; i++) {
-					if (cnt1[ignoreIdx[i]] == true) {
-						cnt1.set(ignoreIdx[i], false);
-					}
-				}
+			switch (shifts[ss]) {
+			case ROW_SHIFT:
+				excludeDummy(&cnt1, 1);
+				excludeDummy(&cnt1, 2);
+				break;
+			case DIAG_SHIFT1:	// 왼쪽 아래
+				excludeDummy(&cnt1, -1);
+				excludeDummy(&cnt1, -2);
+				break;
+			case DIAG_SHIFT2:	// 오른쪽 아래
+				excludeDummy(&cnt1, 1);
+				excludeDummy(&cnt1, 2);
+				break;
+			default:
+				break;
 			}
 			ret += 3 * (p ? -1 : 1)*cnt1.count();
 
@@ -157,6 +177,22 @@ int Board::score() {
             tmp2 &= tmp1;
             tmp2 &= (bricks[p]<<(2*shifts[ss])|bricks[p]<<(shifts[ss]));
 			std::bitset<64> cnt4(tmp2);
+			switch (shifts[ss]) {
+			case ROW_SHIFT:
+				excludeDummy(&cnt4, 1);
+				excludeDummy(&cnt4, 2);
+				break;
+			case DIAG_SHIFT1:	// 왼쪽 아래
+				excludeDummy(&cnt4, -1);
+				excludeDummy(&cnt4, -2);
+				break;
+			case DIAG_SHIFT2:	// 오른쪽 아래
+				excludeDummy(&cnt4, 1);
+				excludeDummy(&cnt4, 2);
+				break;
+			default:
+				break;
+			}
             ret += 10*(p?-1:1)*cnt4.count();   
         }
     }

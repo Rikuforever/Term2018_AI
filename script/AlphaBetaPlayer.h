@@ -97,7 +97,7 @@ class AlphaBetaPlayer: public Player {
 			// 2. Compute 
 			std::vector<int> moves = curboard.validMoves();
 			std::vector<int> candMoves;
-			//    Exclude typical valid if first move
+			//    Exclude typical move on first turn
 			if (curboard.isempty()) {
 				for (int i = 0; i < moves.size(); i++) {
 					if (moves[i] == 4) {

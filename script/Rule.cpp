@@ -193,7 +193,7 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
     }
 }
 
-Block* Compair_Block(List* list){
+Block* Compare_Block(List* list){
     if(list->head==NULL){
         return NULL;
     }
@@ -220,7 +220,7 @@ Block* Compair_Block(List* list){
     }
 }
 
-Block* Compair_Block(List* list, List* clist){  //overload
+Block* Compare_Block(List* list, List* clist){  //overload
     if(list->head==NULL){
         return NULL;
     }
