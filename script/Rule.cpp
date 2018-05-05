@@ -248,6 +248,10 @@ Block* Compare_Block(List* list, List* clist){  //overloading
 }
 
 void ShowAllList(List* list){
+    if(list->head==NULL){
+        printf("empty\n");
+        return;
+    }
     for(int i=0; i<list->count;i++){
         printf("Block number %d\n",i+1);
         printf("shape : %d\n",Select_ith_Block(i+1, list)->shape);
@@ -306,7 +310,7 @@ void AddCautionList(List* list, List* clist){
     }
     List * newlist;
     newlist=Select_Blocks(2,false, list);
-    for(int i=0; i<List_Count(newlist)-1; i++){
+    for(int i=0; i<List_Count(newlist); i++){
         Block* temp =Select_ith_Block(i+1, newlist);
         Block* newb = (Block*)malloc(sizeof(Block));
         newb->shape=temp->shape;
@@ -318,7 +322,7 @@ void AddCautionList(List* list, List* clist){
         newb->position[1]=temp->position[1];
         newb->position[2]=temp->position[2];
         newb->key2=temp->key2;
-        ShowBlock(newb);
+        Add_Block(newb, clist);
     }
 }
 

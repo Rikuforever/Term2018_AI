@@ -18,7 +18,7 @@
 #include <algorithm>
 #include <ctime>
 
-#define MAXDEPTH 8
+#define MAXDEPTH 10
 
 class AlphaBetaPlayer: public Player {
     public:
