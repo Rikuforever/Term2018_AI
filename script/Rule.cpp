@@ -483,6 +483,7 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (i + 2 <= 6) {
                 if ((example[i][j] == example[i + 1][j]) && (example[i][j] == example[i + 2][j]) && example[i][j] != 0) {
+					//가로로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -505,6 +506,7 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (j + 2 <= 5) {
                 if ((example[i][j] == example[i][j + 1]) && (example[i][j] == example[i][j + 2]) && example[i][j] != 0) {
+					//세로로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -526,6 +528,7 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (i + 2 <= 6 && j + 2 <= 5) {
                 if ((example[i][j] == example[i + 1][j + 1]) && (example[i][j] == example[i + 2][j + 2]) && example[i][j] != 0) {
+					//우상향 대각선으로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -548,6 +551,7 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (i - 2 >= 0 && j + 2 <= 5) {
                 if ((example[i][j] == example[i - 1][j + 1]) && (example[i][j] == example[i - 2][j + 2]) && example[i][j] != 0) {
+					//좌상향 대각선으로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -579,6 +583,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6) {
                 if (example[i][j] == example[i + 1][j] && example[i][j] == example[i + 3][j] && example[i][j] != 0) {
+					//오른쪽 방향 가로 : '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -603,6 +608,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0) {
                 if (example[i][j] == example[i - 1][j] && example[i][j] == example[i - 3][j] && example[i][j] != 0) {
+					//왼쪽 방향 가로 : '0 00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -626,6 +632,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6 && j + 3 <= 5) {
                 if (example[i][j] == example[i + 1][j + 1] && example[i][j] == example[i + 3][j + 3] && example[i][j] != 0) {
+					//우상향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -649,6 +656,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0 && j + 3 <= 5) {
                 if (example[i][j] == example[i - 1][j + 1] && example[i][j] == example[i - 3][j + 3] && example[i][j] != 0) {
+					//좌상향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -672,6 +680,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6 && j - 3 >= 0) {
                 if (example[i][j] == example[i + 1][j - 1] && example[i][j] == example[i + 3][j - 3] && example[i][j] != 0) {
+					//우하향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -695,6 +704,7 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0 && j - 3 >= 0) {
                 if (example[i][j] == example[i - 1][j - 1] && example[i][j] == example[i - 3][j - 3] && example[i][j] != 0) {
+					//좌하향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -729,6 +739,7 @@ bool Find_Shape_3(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 1 <= 6) {
                 if (example[i][j] == example[i + 1][j] && example[i][j] != 0) {
+					//가로 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -748,6 +759,7 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (j + 1 <= 5) {
                 if (example[i][j] == example[i][j + 1] && example[i][j] != 0) {
+					//세로 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -767,6 +779,7 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (i + 1 <= 6 && j + 1 <= 5) {
                 if (example[i][j] == example[i + 1][j + 1] && example[i][j] != 0) {
+					//우상향 대각선 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -786,6 +799,7 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (i - 1 >= 0 && j + 1 <= 5) {
                 if (example[i][j] == example[i - 1][j + 1] && example[i][j] != 0) {
+					//좌상향 대각선 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -817,6 +831,7 @@ bool Find_Shape_4(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 2 <= 6) {
                 if (example[i][j] == example[i + 2][j] && example[i][j] != 0) {
+					//가로 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -836,6 +851,7 @@ bool Find_Shape_4(List* list, int example[][6]) {
             }
             if (i + 2 <= 6 && j + 2 <= 5) {
                 if (example[i][j] == example[i + 2][j + 2] && example[i][j] != 0) {
+					//우상향 대각선 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -855,6 +871,7 @@ bool Find_Shape_4(List* list, int example[][6]) {
             }
             if (i - 2 >= 0 && j + 2 <= 5) {
                 if (example[i][j] == example[i - 2][j + 2] && example[i][j] != 0) {
+					//우상향 대각선 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -885,6 +902,7 @@ bool Find_Shape_5(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 3 <= 6) {
                 if (example[i][j] == example[i + 3][j] && example[i][j] != 0) {
+					//가로 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -903,6 +921,7 @@ bool Find_Shape_5(List* list, int example[][6]) {
             }
             if (i + 3 <= 6 && j + 3 <= 5) {
                 if (example[i][j] == example[i + 3][j + 3] && example[i][j] != 0) {
+					//우상향 대각선 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -921,6 +940,7 @@ bool Find_Shape_5(List* list, int example[][6]) {
             }
             if (i - 3 >= 0 && j + 3 <= 5) {
                 if (example[i][j] == example[i - 3][j + 3] && example[i][j] != 0) {
+					//우상향 대각선 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
