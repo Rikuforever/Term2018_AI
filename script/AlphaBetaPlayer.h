@@ -69,7 +69,7 @@ class AlphaBetaPlayer: public Player {
         int getMove(Board& curboard) {
 			bool doRule;
 
-			// 1. Select method
+			// 1. 연산방식 설정
 			char inputChar = EOF;
 			do {
 				printf("Computer  | (1) Heuristic\n");
@@ -95,19 +95,21 @@ class AlphaBetaPlayer: public Player {
 				while (getchar() != '\n') {}	// Clear buffer
 			} while (inputChar == EOF);
 
-			// 2. Start Timer
+			// 2. 타이머 시작
 			double starttime = clock();
 
-			// 3. Compute 
+			// 3. 연산
 			std::vector<int> moves = curboard.validMoves();
 			std::vector<int> candMoves;
-			//    Exclude typical move on first turn
+
+			//    Do typical move on first turn
 			if (curboard.isempty()) {
 				for (int i = 0; i < moves.size(); i++) {
 					if (moves[i] == 4) {
 						moves.erase(moves.begin() + i - 1);
 						printf("Computer  | Excluded 'MOVE 4' when first turn.\n");
-						break;
+						printf("Computer  | Elapsed Time : %.2f sec\n", (clock() - starttime) / (double)CLOCKS_PER_SEC);
+						return 2;
 					}
 				}
 			}
@@ -135,10 +137,10 @@ class AlphaBetaPlayer: public Player {
 				printf("Computer  | Heuristic | Result : DEPTH %d (player %d) EVAL %d\n", MAXDEPTH + 2 * (7 - (int)moves.size()), playerid, bestScore);
 			}
 
-			// 4. End Timer
+			// 4. 타이머 끝
 			printf("Computer  | Elapsed Time : %.2f sec\n", (clock() - starttime) / (double)CLOCKS_PER_SEC);
 
-			return candMoves[(rand()%((int)candMoves.size()))];
+			return candMoves[(arc4random()%((int)candMoves.size()))];
         }
 };
 

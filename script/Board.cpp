@@ -121,13 +121,13 @@ int Board::result() {
     return -1;
 }
 
-// Heuristic Function
+// Heuristic Function (return값 : Player1 기준, -return값 : Player0 기준)
 int Board::score() {
+	// Cache 확인하여 이미 연산했으면 그 값을 반환한다.
 	static std::map<unsigned long long, std::map<unsigned long long, int>> cache;
 	if (cache[bricks[0]][bricks[1]] != NULL) {
 		return cache[bricks[0]][bricks[1]];
 	}
-
 
     int result_check = result();
     if (result_check != -1) {
@@ -210,6 +210,7 @@ int Board::score() {
         }
     }
 
+	// 연산한 값을 Cache에 등록한다
 	cache[bricks[0]][bricks[1]] = ret;
     return ret;
 }
