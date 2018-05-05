@@ -123,6 +123,12 @@ int Board::result() {
 
 // Heuristic Function
 int Board::score() {
+	static std::map<unsigned long long, std::map<unsigned long long, int>> cache;
+	if (cache[bricks[0]][bricks[1]] != NULL) {
+		return cache[bricks[0]][bricks[1]];
+	}
+
+
     int result_check = result();
     if (result_check != -1) {
         if (result_check == 2) return 0;
@@ -203,6 +209,8 @@ int Board::score() {
             ret += 10*(p?-1:1)*cnt4.count();   
         }
     }
+
+	cache[bricks[0]][bricks[1]] = ret;
     return ret;
 }
 

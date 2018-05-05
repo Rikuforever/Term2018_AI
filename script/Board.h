@@ -6,6 +6,7 @@
 #define BOARD_HH
 
 #include <vector>
+#include <map>
 
 /**
  *  A Board represents the current state of the game. It is
@@ -14,7 +15,7 @@
  **/
 class Board {
     private:
-        unsigned long long bricks[2];
+		unsigned long long bricks[2];
     public:
         /**
          * Default constructor.
