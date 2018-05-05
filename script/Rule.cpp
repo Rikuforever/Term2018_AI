@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -6,6 +5,7 @@
 #include <time.h>
 #include <math.h>
 #include "Rule.h"
+using namespace std;
 enum Direction{cross,horizontal,vertical};
 
 class Grid{
@@ -131,8 +131,7 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
     list->current=list->head;
     int n= BitCalculate(clist);
     while (1){
-        if(list->current->shape==2&&list->current->priority==1)
-        {
+        if(list->current->shape==2&&list->current->priority==1){
             if(list->current->priority==p && list->current->friendly==f){
                 Block* newb = (Block*)malloc(sizeof(Block));
                 newb->shape=list->current->shape;
@@ -160,22 +159,22 @@ List* Select_Blocks(int p, bool f, List* list, List * clist){   //overloading
         else{
             if(list->current->priority==p && list->current->friendly==f){
                 if(n!=(n|(int)pow(2,list->current->key.x))&&n!=(n|(int)pow(2,list->current->key2.x))){
-                    Block* newb = (Block*)malloc(sizeof(Block));
-                    newb->shape=list->current->shape;
-                    newb->direction=list->current->direction;
-                    newb->key=list->current->key;
-                    newb->friendly=list->current->friendly;
-                    newb->priority=list->current->priority;
-                    newb->position[0]=list->current->position[0];
-                    newb->position[1]=list->current->position[1];
-                    newb->position[2]=list->current->position[2];
-                    newb->key2=list->current->key2;
-                    Add_Block(newb, newlist);
-                    list->current=list->current->next;
-                    if(list->current==NULL){
-                        return newlist;
-                    }
+                Block* newb = (Block*)malloc(sizeof(Block));
+                newb->shape=list->current->shape;
+                newb->direction=list->current->direction;
+                newb->key=list->current->key;
+                newb->friendly=list->current->friendly;
+                newb->priority=list->current->priority;
+                newb->position[0]=list->current->position[0];
+                newb->position[1]=list->current->position[1];
+                newb->position[2]=list->current->position[2];
+                newb->key2=list->current->key2;
+                Add_Block(newb, newlist);
+                list->current=list->current->next;
+                if(list->current==NULL){
+                    return newlist;
                 }
+            }
                 else{
                     list->current=list->current->next;
                     if(list->current==NULL){
@@ -212,7 +211,8 @@ Block* Compare_Block(List* list){
     }
     if(newlist->head!=NULL){
         srand(time(NULL));
-        int i=rand()%List_Count(newlist)+1;
+        
+        int i=(int)arc4random()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -220,7 +220,7 @@ Block* Compare_Block(List* list){
     }
 }
 
-Block* Compare_Block(List* list, List* clist){  //overload
+Block* Compare_Block(List* list, List* clist){  //overloading
     if(list->head==NULL){
         return NULL;
     }
@@ -239,7 +239,7 @@ Block* Compare_Block(List* list, List* clist){  //overload
     }
     if(newlist->head!=NULL){
         srand(time(NULL));
-        int i=rand()%List_Count(newlist)+1;
+        int i=(int)arc4random()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -292,6 +292,14 @@ void ShowBlock(Block* b){
     printf("----------------------------\n\n");
 }
 
+void ShowMethod(Block*b){
+    printf("----------------------------\n");
+    printf("Printing part of rule...\n");
+    printf("Shape : %d, Priority : %d\n",b->shape,b->priority);
+    printf("Uesd Method : Solution %d\n",(int)floor((b->shape*12+b->priority*4)/10));
+    printf("----------------------------\n");
+}
+
 void AddCautionList(List* list, List* clist){
     if(list->head==NULL){
         return;
@@ -334,13 +342,13 @@ int BitCalculate(List* clist){
 int RandomPick(List* clist){
     srand((unsigned int)time(NULL));
     int n = BitCalculate(clist);
-    int s=rand()%7;
+    int s=arc4random()%7;
     s=(int)pow(2, s);
     while (1) {
         if(n!=(n|s)){
             return log2(s);
         }
-        s=rand()%7;
+        s=arc4random()%7;
         s=(int)pow(2, s);
     }
 }
@@ -371,7 +379,7 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
     List* clist=&m2list;                                    // clist는 m2list의 주소값을 담고있다.
     initlist(list);                                         // list 초기화
     initlist(clist);                                        // clist 초기화
-    
+
     int example[7][6];                                      // 게임판의 data를 담을 int형 2차원배열 선언
     
     for (int x = 0; x < 7; x++) {                           // vector<std::vector<int>> 의 데이터를 int형 2차원배열에 담는다
@@ -381,6 +389,11 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
     }
     
     if(First_shot(example)){                                // 게임의 첫수를 두는지 판별하는 함수 return값이 true라면 첫수를 두는 것이다.
+        printf("----------------------------\n");
+        printf("Printing part of rule...\n");
+        printf("Shape : Not Detected, Priority : Not Detected\n");
+        printf("Uesd Method : Solution 0\n");
+        printf("----------------------------\n");
         return 2;                                           // 첫수를 둔다면 Grid 기준 (2,0) 에 둔다.
     }
     
@@ -393,6 +406,7 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
         Block* result =Compare_Block(list);                 // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
         if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
             ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            ShowMethod(result);
             int r= result->key.x;                           // 착수점의 위치를 추려낸다
             return r;                                       // 착수점을 반환한다
         }
@@ -406,6 +420,7 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
         Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
         if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
             ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            ShowMethod(result);
             int r= result->key.x;                           // 착수점의 위치를 추려낸다
             return r;                                       // 착수점을 반환한다
         }
@@ -419,6 +434,7 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
         Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
         if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
             ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            ShowMethod(result);
             int r= result->key.x;                           // 착수점의 위치를 추려낸다
             return r;                                       // 착수점을 반환한다
         }
@@ -432,6 +448,7 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
         Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
         if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
             ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            ShowMethod(result);
             int r = result->key.x;                          // 착수점의 위치를 추려낸다
             return r;                                       // 착수점을 반환한다
         }
@@ -445,10 +462,16 @@ int Rule(std::vector<std::vector<int>> board){              // return 형이 int
         Block* result =Compare_Block(list,clist);           // 현재 List에 저장된 모든 Block들을 비교해 적합한 Block을 추려주는 함수
         if(result!=NULL){                                   // 만약 찾은 Block 이 없다면 다른 Shape 의 Block을 찾으로 이동하고 만약 찾았다면
             ShowBlock(result);                              // 찾은 Block 의 data를 출력한다
+            ShowMethod(result);
             int r = result->key.x;                          // 착수점의 위치를 추려낸다
             return r;                                       // 착수점을 반환한다
         }
     }
+    printf("----------------------------\n");
+    printf("Printing part of rule...\n");
+    printf("Shape : Not Detected, Priority : Not Detected\n");
+    printf("Uesd Method : Solution 7\n");
+    printf("----------------------------\n");
     return RandomPick(clist);                               // 위에서 아무런 착수점도 찾지 못했다면 절대 두면 않되는 자리를 제외한 자리에 둔다
 }
 
@@ -459,8 +482,7 @@ bool Find_Shape_1(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             
             if (i + 2 <= 6) {
-                if ((example[i][j] == example[i + 1][j]) && (example[i][j] == example[i + 2][j]) && example[i][j] != 0) {		
-					//가로로 '000'
+                if ((example[i][j] == example[i + 1][j]) && (example[i][j] == example[i + 2][j]) && example[i][j] != 0) {
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -483,7 +505,6 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (j + 2 <= 5) {
                 if ((example[i][j] == example[i][j + 1]) && (example[i][j] == example[i][j + 2]) && example[i][j] != 0) {
-					//세로로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -505,7 +526,6 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (i + 2 <= 6 && j + 2 <= 5) {
                 if ((example[i][j] == example[i + 1][j + 1]) && (example[i][j] == example[i + 2][j + 2]) && example[i][j] != 0) {
-					//우상향 대각선으로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -528,7 +548,6 @@ bool Find_Shape_1(List* list, int example[][6]) {
             
             if (i - 2 >= 0 && j + 2 <= 5) {
                 if ((example[i][j] == example[i - 1][j + 1]) && (example[i][j] == example[i - 2][j + 2]) && example[i][j] != 0) {
-					//좌상향 대각선으로 '000'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -560,7 +579,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6) {
                 if (example[i][j] == example[i + 1][j] && example[i][j] == example[i + 3][j] && example[i][j] != 0) {
-					//오른쪽 방향 가로 : '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -585,7 +603,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0) {
                 if (example[i][j] == example[i - 1][j] && example[i][j] == example[i - 3][j] && example[i][j] != 0) {
-					//왼쪽 방향 가로 : '0 00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -609,7 +626,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6 && j + 3 <= 5) {
                 if (example[i][j] == example[i + 1][j + 1] && example[i][j] == example[i + 3][j + 3] && example[i][j] != 0) {
-					//우상향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -633,7 +649,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0 && j + 3 <= 5) {
                 if (example[i][j] == example[i - 1][j + 1] && example[i][j] == example[i - 3][j + 3] && example[i][j] != 0) {
-					//좌상향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -657,7 +672,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i + 3 <= 6 && j - 3 >= 0) {
                 if (example[i][j] == example[i + 1][j - 1] && example[i][j] == example[i + 3][j - 3] && example[i][j] != 0) {
-					//우하향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -681,7 +695,6 @@ bool Find_Shape_2(List* list, int example[][6]) {
             
             if (i - 3 >= 0 && j - 3 >= 0) {
                 if (example[i][j] == example[i - 1][j - 1] && example[i][j] == example[i - 3][j - 3] && example[i][j] != 0) {
-					//좌하향 대각선 '00 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -716,7 +729,6 @@ bool Find_Shape_3(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 1 <= 6) {
                 if (example[i][j] == example[i + 1][j] && example[i][j] != 0) {
-					//가로 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -736,7 +748,6 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (j + 1 <= 5) {
                 if (example[i][j] == example[i][j + 1] && example[i][j] != 0) {
-					//세로 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -756,7 +767,6 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (i + 1 <= 6 && j + 1 <= 5) {
                 if (example[i][j] == example[i + 1][j + 1] && example[i][j] != 0) {
-					//우상향 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -776,7 +786,6 @@ bool Find_Shape_3(List* list, int example[][6]) {
             }
             if (i - 1 >= 0 && j + 1 <= 5) {
                 if (example[i][j] == example[i - 1][j + 1] && example[i][j] != 0) {
-					//좌상향 '00'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -808,7 +817,6 @@ bool Find_Shape_4(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 2 <= 6) {
                 if (example[i][j] == example[i + 2][j] && example[i][j] != 0) {
-					//가로 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -828,7 +836,6 @@ bool Find_Shape_4(List* list, int example[][6]) {
             }
             if (i + 2 <= 6 && j + 2 <= 5) {
                 if (example[i][j] == example[i + 2][j + 2] && example[i][j] != 0) {
-					//우상향 대각선 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -848,7 +855,6 @@ bool Find_Shape_4(List* list, int example[][6]) {
             }
             if (i - 2 >= 0 && j + 2 <= 5) {
                 if (example[i][j] == example[i - 2][j + 2] && example[i][j] != 0) {
-					//좌상향 대각선 '0 0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -879,7 +885,6 @@ bool Find_Shape_5(List* list, int example[][6]) {
         for (int j = 0; j <= 5; j++) {
             if (i + 3 <= 6) {
                 if (example[i][j] == example[i + 3][j] && example[i][j] != 0) {
-					//가로 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -898,7 +903,6 @@ bool Find_Shape_5(List* list, int example[][6]) {
             }
             if (i + 3 <= 6 && j + 3 <= 5) {
                 if (example[i][j] == example[i + 3][j + 3] && example[i][j] != 0) {
-					//우상향 대각선 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;
@@ -917,7 +921,6 @@ bool Find_Shape_5(List* list, int example[][6]) {
             }
             if (i - 3 >= 0 && j + 3 <= 5) {
                 if (example[i][j] == example[i - 3][j + 3] && example[i][j] != 0) {
-					//좌상향 대각선 '0  0'
                     bool f;
                     Grid p1, p2, p3;
                     Direction d;

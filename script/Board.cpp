@@ -5,7 +5,6 @@
 #include "Board.h"
 #include <cstdio>
 #include <cstdlib>
-#include <intrin.h>
 #include <bitset>
 
 #define COLS 7LL
