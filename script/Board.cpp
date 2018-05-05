@@ -149,20 +149,20 @@ int Board::score() {
             tmp2 &= tmp1;
 			std::bitset<64> cnt1(tmp2);
 			switch (shifts[ss]) {
-			case ROW_SHIFT:
-				excludeDummy(&cnt1, 1);
-				excludeDummy(&cnt1, 2);
-				break;
-			case DIAG_SHIFT1:	// 왼쪽 아래
-				excludeDummy(&cnt1, -1);
-				excludeDummy(&cnt1, -2);
-				break;
-			case DIAG_SHIFT2:	// 오른쪽 아래
-				excludeDummy(&cnt1, 1);
-				excludeDummy(&cnt1, 2);
-				break;
-			default:
-				break;
+				case ROW_SHIFT:		// 가로
+					excludeDummy(&cnt1, 1);
+					excludeDummy(&cnt1, 2);
+					break;
+				case DIAG_SHIFT1:	// 왼쪽 아래 대각선
+					excludeDummy(&cnt1, -1);
+					excludeDummy(&cnt1, -2);
+					break;
+				case DIAG_SHIFT2:	// 오른쪽 아래 대각선
+					excludeDummy(&cnt1, 1);
+					excludeDummy(&cnt1, 2);
+					break;
+				default:
+					break;
 			}
 			ret += 3 * (p ? -1 : 1)*cnt1.count();
 
@@ -186,20 +186,20 @@ int Board::score() {
             tmp2 &= (bricks[p]<<(2*shifts[ss])|bricks[p]<<(shifts[ss]));
 			std::bitset<64> cnt4(tmp2);
 			switch (shifts[ss]) {
-			case ROW_SHIFT:
-				excludeDummy(&cnt4, 1);
-				excludeDummy(&cnt4, 2);
-				break;
-			case DIAG_SHIFT1:	// 왼쪽 아래
-				excludeDummy(&cnt4, -1);
-				excludeDummy(&cnt4, -2);
-				break;
-			case DIAG_SHIFT2:	// 오른쪽 아래
-				excludeDummy(&cnt4, 1);
-				excludeDummy(&cnt4, 2);
-				break;
-			default:
-				break;
+				case ROW_SHIFT:		// 가로
+					excludeDummy(&cnt4, 1);
+					excludeDummy(&cnt4, 2);
+					break;
+				case DIAG_SHIFT1:	// 왼쪽 아래 대각선
+					excludeDummy(&cnt4, -1);
+					excludeDummy(&cnt4, -2);
+					break;
+				case DIAG_SHIFT2:	// 오른쪽 아래 대각선
+					excludeDummy(&cnt4, 1);
+					excludeDummy(&cnt4, 2);
+					break;
+				default:
+					break;
 			}
             ret += 10*(p?-1:1)*cnt4.count();   
         }
