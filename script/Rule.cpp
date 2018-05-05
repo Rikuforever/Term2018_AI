@@ -212,7 +212,7 @@ Block* Compare_Block(List* list){
     if(newlist->head!=NULL){
         srand(time(NULL));
         
-        int i=(int)rand()%List_Count(newlist)+1;
+        int i=(int)arc4random()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -239,7 +239,7 @@ Block* Compare_Block(List* list, List* clist){  //overloading
     }
     if(newlist->head!=NULL){
         srand(time(NULL));
-        int i=(int)rand()%List_Count(newlist)+1;
+        int i=(int)arc4random()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -342,13 +342,13 @@ int BitCalculate(List* clist){
 int RandomPick(List* clist){
     srand((unsigned int)time(NULL));
     int n = BitCalculate(clist);
-    int s=rand()%7;
+    int s= arc4random()%7;
     s=(int)pow(2, s);
     while (1) {
         if(n!=(n|s)){
             return log2(s);
         }
-        s=rand()%7;
+        s= arc4random()%7;
         s=(int)pow(2, s);
     }
 }
