@@ -212,7 +212,7 @@ Block* Compare_Block(List* list){
     if(newlist->head!=NULL){
         srand(time(NULL));
         
-        int i=(int)arc4random()%List_Count(newlist)+1;
+        int i=(int)rand()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -239,7 +239,7 @@ Block* Compare_Block(List* list, List* clist){  //overloading
     }
     if(newlist->head!=NULL){
         srand(time(NULL));
-        int i=(int)arc4random()%List_Count(newlist)+1;
+        int i=(int)rand()%List_Count(newlist)+1;
         return Select_ith_Block(i, newlist);
     }
     else{
@@ -342,13 +342,13 @@ int BitCalculate(List* clist){
 int RandomPick(List* clist){
     srand((unsigned int)time(NULL));
     int n = BitCalculate(clist);
-    int s=arc4random()%7;
+    int s=rand()%7;
     s=(int)pow(2, s);
     while (1) {
         if(n!=(n|s)){
             return log2(s);
         }
-        s=arc4random()%7;
+        s=rand()%7;
         s=(int)pow(2, s);
     }
 }
@@ -1028,7 +1028,7 @@ void Define_Block(Block* a, int example[][6]) {
         else if (a->direction == vertical) {
             int x2 = a->position[2].x;
             int y2 = a->position[2].y;
-            //세로로 000일때에는 무조건 위를 막아야 하고 그곳은 무조건 둘수 있다.
+            //세로로 000일때에는 무조건 위를 막아야 하고 그곳은 벽이 아닌 이상 무조건 둘수 있다.
             if (y2 <= 4 && example[x2][y2 + 1] == 0) {
                 a->priority = 1;
                 Grid x(x2, y2 + 1);
